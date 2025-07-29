@@ -1,26 +1,117 @@
-@import "tailwindcss";
+/* @tailwind base;
+@tailwind components; */
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: 220 13% 9%; /* #16181e */
+    --foreground: 0 0% 95%;
+    --card: 220 13% 12%; /* #1a1d26 */
+    --card-foreground: 0 0% 95%;
+    --popover: 220 13% 9%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 84 65% 50%; /* #83bb06 green */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 13% 17%; /* #272f3f */
+    --secondary-foreground: 0 0% 95%;
+    --muted: 220 13% 17%;
+    --muted-foreground: 0 0% 65%;
+    --accent: 220 13% 17%;
+    --accent-foreground: 0 0% 95%;
+    --destructive: 10 84% 44%; /* #703429 red */
+    --destructive-foreground: 0 0% 95%;
+    --border: 220 13% 17%;
+    --input: 220 13% 17%;
+    --ring: 84 65% 50%;
+    --chart-1: 84 65% 50%;
+    --chart-2: 12 76% 61%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+
+    /* Custom Etorous colors */
+    --etorous-green: #83bb06;
+    --etorous-red: #d32f2f;
+    --etorous-yellow: #b0b14b;
+    --etorous-bg-primary: #16181e;
+    --etorous-bg-secondary: #272f3f;
+    --etorous-bg-card: #1a1d26;
+    --etorous-border: #2a2d3a;
+    --etorous-text-primary: #ffffff;
+    --etorous-text-secondary: #b0b3b8;
+    --etorous-text-muted: #61666e;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  .etorous-sidebar {
+    background: linear-gradient(180deg, #1a1d26 0%, #16181e 100%);
+  }
+
+  .etorous-panel {
+    background: rgba(26, 29, 38, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--etorous-border);
+  }
+
+  .etorous-button-primary {
+    background: var(--etorous-green);
+    color: white;
+    transition: all 0.2s ease;
+  }
+
+  .etorous-button-primary:hover {
+    background: #6fa005;
+  }
+
+  .etorous-button-danger {
+    background: var(--etorous-red);
+    color: white;
+    transition: all 0.2s ease;
+  }
+
+  .etorous-button-danger:hover {
+    background: #b71c1c;
+  }
+
+  .trading-item-positive {
+    color: var(--etorous-green);
+  }
+
+  .trading-item-negative {
+    color: var(--etorous-red);
+  }
+
+  .chart-container {
+    background: var(--etorous-bg-card);
+    border: 1px solid var(--etorous-border);
+    border-radius: 8px;
+  }
+
+  /* Custom scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: var(--etorous-bg-secondary);
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--etorous-border);
+    border-radius: 3px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #3a3f4f;
+  }
 }
