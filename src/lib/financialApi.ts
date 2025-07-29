@@ -65,13 +65,17 @@ export class FinancialDataService {
     }
 
     try {
-      const yahooSymbol = SYMBOL_MAP[symbol] || symbol;
       const response = await axios.get(`/api/finance/${symbol}`, {
         params: {
           interval: '1m',
           range: '1d'
-        }
+        },
+        timeout: 10000
       });
+
+      if (!response.data || !response.data.chart || !response.data.chart.result) {
+        throw new Error('Invalid API response');
+      }
 
       const result = response.data.chart.result[0];
       const meta = result.meta;
@@ -95,7 +99,7 @@ export class FinancialDataService {
         volume: this.formatVolume(meta.regularMarketVolume || 0),
         high: meta.regularMarketDayHigh || currentPrice,
         low: meta.regularMarketDayLow || currentPrice,
-        open: meta.regularMarketDayLow || currentPrice,
+        open: quote.open[0] || currentPrice,
       };
 
       this.cache.set(symbol, { data: marketData, timestamp: Date.now() });
@@ -110,13 +114,17 @@ export class FinancialDataService {
   // Get historical candlestick data
   async getCandleData(symbol: string, interval: string = '1m'): Promise<CandleData[]> {
     try {
-      const yahooSymbol = SYMBOL_MAP[symbol] || symbol;
-      const response = await axios.get(`${YAHOO_FINANCE_API}${yahooSymbol}`, {
+      const response = await axios.get(`/api/finance/${symbol}`, {
         params: {
           interval,
-          range: '5d' // Get 5 days of data
-        }
+          range: '1d' // Get 1 day of data for better performance
+        },
+        timeout: 10000
       });
+
+      if (!response.data || !response.data.chart || !response.data.chart.result) {
+        throw new Error('Invalid API response');
+      }
 
       const result = response.data.chart.result[0];
       const timestamps = result.timestamp;

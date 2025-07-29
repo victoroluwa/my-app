@@ -1,9 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { createChart, IChartApi } from "lightweight-charts";
-// Update the path below to the correct relative path based on your project structure.
-// For example, if MarketDataContext.tsx is in src/contexts:
+import { createChart, IChartApi, ColorType } from "lightweight-charts";
 import { useMarketData, useCandleData, useCurrentSymbolData } from "../contexts/MarketDataContext";
 import { Loader2 } from "lucide-react";
 
@@ -28,7 +26,7 @@ export function TradingChart({ symbol }: TradingChartProps) {
       width: chartContainerRef.current.clientWidth,
       height: chartContainerRef.current.clientHeight,
       layout: {
-        background: { color: "#1a1d26" },
+        background: { type: ColorType.Solid, color: "#1a1d26" },
         textColor: "#b0b3b8",
       },
       grid: {
@@ -36,7 +34,7 @@ export function TradingChart({ symbol }: TradingChartProps) {
         horzLines: { color: "#2a2d3a" },
       },
       crosshair: {
-        mode: 1,
+        mode: 0,
       },
       rightPriceScale: {
         borderColor: "#2a2d3a",
@@ -51,7 +49,7 @@ export function TradingChart({ symbol }: TradingChartProps) {
     chartRef.current = chart;
 
     // Add candlestick series
-    const candlestickSeries = (chart as any).addCandlestickSeries({ // eslint-disable-line @typescript-eslint/no-explicit-any
+    const candlestickSeries = chart.addCandlestickSeries({
       upColor: "#83bb06",
       downColor: "#d32f2f",
       borderDownColor: "#d32f2f",
@@ -64,7 +62,7 @@ export function TradingChart({ symbol }: TradingChartProps) {
 
     // Convert and set data
     const chartData = candleData.map(candle => ({
-      time: candle.time.split('T')[0], // Convert to date format for lightweight-charts
+      time: Math.floor(new Date(candle.time).getTime() / 1000), // Convert to timestamp
       open: candle.open,
       high: candle.high,
       low: candle.low,
